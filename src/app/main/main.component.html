@@ -1,0 +1,2 @@
+<app-input (addNewTaskEvent)="addNewTask($event)"></app-input>
+<app-list [tasksFromRoot]="tasks" (removeTaskEvent)="removeTask($event)" (changeStatusEvent)="changeStatus($event)"></app-list>

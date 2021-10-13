@@ -1,0 +1,9 @@
+<div *ngFor="let task of tasks" class="d-flex justify-content-center my-4">
+    <div [ngStyle]="task.isCompleted? completedStatus:incompletedStatus" class="d-flex align-items-center p-2 rounded w-50 justify-content-between">
+        <div [innerText]='task.isCompleted? task.name + " (Completed) " : task.name' (click)="changeStatus(task)" class="flex-fill">
+        </div>
+        <div (click)="removeTask(task)" class="text-end pointer font-weight-bold">
+            <i class="fas fa-times fa-2x"></i>
+        </div>
+    </div>
+</div>
