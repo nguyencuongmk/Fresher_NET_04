@@ -1,0 +1,24 @@
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Avatar</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let customer of customerList let i=index">
+            <th>{{i+1}}</th>
+            <th>{{customer.firstName + " " + customer.lastName}} </th>
+            <th><img [src]="customer.avatar" [alt]="customer.lastName" style="width: 100px; height: 100px;"></th>
+            <th>{{customer.address}}</th>
+            <th>
+                <button class="btn btn-danger btn-sm" (click)="deleteCustomer(customer.id)">Delete</button>
+                <button class="btn btn-primary btn-sm" routerLink="/edit/{{customer.id}}">Update</button>
+                <button class="btn btn-success btn-sm" routerLink="/detail/{{customer.id}}">View Detail</button>
+            </th>
+        </tr>
+    </tbody>
+</table>
