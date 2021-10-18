@@ -1,0 +1,13 @@
+<div class="card mb-4 shadow-sm" style="width: 18rem; height: 100%;">
+    <img class="bd-placeholder-img card-img-top" src="{{productItem.image}}" alt="{{productItem.image}}">
+    <div class="card-body">
+        <h5 class="card-title text-center">{{productItem.productName}}</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item text-center">{{productItem.price-(productItem.promotionPrice/100)*productItem.price}}</li>
+        <li class="list-group-item text-center text-decoration-line-through" *ngIf="productItem.promotionPrice!=0">{{productItem.price + ' VND'}}</li>
+    </ul>
+    <div class="card-body">
+        <button class="btn btn-outline-primary w-100" (click)="addToCart()">Add to cart</button>
+    </div>
+</div>

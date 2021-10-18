@@ -1,0 +1,96 @@
+<table class="table table-hover table-bordered align-middle" *ngIf="!isSuccess">
+    <thead>
+        <tr class="text-center">
+            <th>#</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Promotion</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of cartItems let i=index" class="text-center">
+            <td>{{i+1}}</td>
+            <td>{{item.product.productName}}</td>
+            <td><img style="width: 50px; height: 60px;" [src]="item.product.image" [alt]="item.product.image"></td>
+            <td>{{item.product.price}}</td>
+            <td>{{item.product.promotionPrice}}</td>
+            <td><input class="form-control w-50" type="number" min="1" [max]="item.product.quantity" [(ngModel)]="item.quantity"></td>
+            <td>{{(item.product.price - item.product.price*(item.product.promotionPrice/100))*item.quantity}}</td>
+            <td><button (click)="deleteCartItem(item)" class="btn btn-danger btn-sm">Delete</button></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="8">Thành tiền: {{grandTotal()}}</td>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="card" *ngIf="!isSuccess">
+    <div class="card-header">Thông tin khách hàng</div>
+    <div class="card-body">
+        <form (ngSubmit)="onSubmit()" [formGroup]="formPayment">
+            <div class="mb-3">
+                <label class="form-label">Họ Tên</label>
+                <input type="text" formControlName="fullName" placeholder="Họ Tên" class="form-control">
+                <small class="text-danger" *ngIf="formPayment.controls.fullName.invalid && formPayment.controls.fullName.touched">Họ tên không được để trống</small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Số điện thoại</label>
+                <input type="number" formControlName="phoneNumber" placeholder="Phone Number" class="form-control">
+                <small class="text-danger" *ngIf="formPayment.controls.phoneNumber.invalid && formPayment.controls.phoneNumber.touched">Số điện thoại không được để trống</small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <textarea type="text" formControlName="address" placeholder="Địa chỉ" class="form-control"></textarea>
+                <small class="text-danger" *ngIf="formPayment.controls.address.invalid && formPayment.controls.address.touched">Địa chỉ không được để trống</small>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" [disabled]="formPayment.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card" *ngIf="isSuccess">
+    <div class="aLert alert-success p-3 mb-3">Đơn hàng của bạn đang chờ được xác nhận, chúng tôi sẽ liên hệ sau</div>
+    <div class="card-header">Thông tin đơn hàng</div>
+    <div class="card-body">
+        <p class="h6 pb-2">Họ tên: {{formPayment.controls.fullName.value}}</p>
+        <p class="h6 pb-2">Số ĐT: {{formPayment.controls.phoneNumber.value}}</p>
+        <p class="h6 pb-2">Địa chỉ: {{formPayment.controls.address.value}}</p>
+        <table class="table table-hover table-bordered align-middle">
+            <thead>
+                <tr class="text-center">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Promotion</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of cartItems let i=index" class="text-center">
+                    <td>{{i+1}}</td>
+                    <td>{{item.product.productName}}</td>
+                    <td><img style="width: 50px; height: 60px;" [src]="item.product.image" [alt]="item.product.image"></td>
+                    <td>{{item.product.price}}</td>
+                    <td>{{item.product.promotionPrice}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{(item.product.price - item.product.price*(item.product.promotionPrice/100))*item.quantity}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">Tổng phải thanh toán: {{grandTotal()}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
