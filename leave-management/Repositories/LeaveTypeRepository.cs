@@ -1,5 +1,6 @@
 ﻿using leave_management.Contracts;
 using leave_management.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +17,17 @@ namespace leave_management.Repositories
 
         public bool Create(LeaveType entity)
         {
-            _db.LeaveTypes.Add(entity);
+            var lastEntity = _db.LeaveTypes.OrderByDescending(lt => lt.Id).FirstOrDefault();
+            if (lastEntity != null)
+            {
+                _db.Database.ExecuteSqlRaw($"DBCC CHECKIDENT ('dbo.LeaveTypes', RESEED, {lastEntity.Id})");
+                _db.LeaveTypes.Add(entity);
+            }
+            else
+            {
+                _db.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.LeaveTypes', RESEED, 0)");
+                _db.LeaveTypes.Add(entity);
+            }
             return Save();
         }
 
@@ -39,6 +50,12 @@ namespace leave_management.Repositories
         public ICollection<LeaveType> GetEmployeesByLeaveType(int id)
         {
             throw new System.NotImplementedException();
+        }
+
+        public bool isExists(int id)
+        {
+            var isLeaveTypeExisting = _db.LeaveTypes.Any(lt => lt.Id == id);
+            return isLeaveTypeExisting;
         }
 
         public bool Save()
