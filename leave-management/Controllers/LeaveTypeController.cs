@@ -2,6 +2,7 @@
 using leave_management.Contracts;
 using leave_management.Data;
 using leave_management.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace leave_management.Controllers
 {
+    [Authorize]
     public class LeaveTypeController : Controller
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
@@ -44,12 +46,14 @@ namespace leave_management.Controllers
             return View(leaveTypeVM);
         }
 
+        [Authorize(Roles ="Administrator")]
         // GET: LeaveTypeController/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         // POST: LeaveTypeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,6 +85,7 @@ namespace leave_management.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: LeaveTypeController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -93,6 +98,8 @@ namespace leave_management.Controllers
             return View(leaveTypeVM);
         }
 
+
+        [Authorize(Roles = "Administrator")]
         // POST: LeaveTypeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -122,6 +129,7 @@ namespace leave_management.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: LeaveTypeController/Delete/5
         public ActionResult Delete(/*LeaveTypeVM leaveTypeVM*/int id)
         {
@@ -162,6 +170,8 @@ namespace leave_management.Controllers
             //return View(leaveTypeVM);
         }
 
+
+        [Authorize(Roles = "Administrator")]
         // POST: LeaveTypeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
