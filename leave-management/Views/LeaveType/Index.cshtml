@@ -12,7 +12,7 @@
         Create New
     </a>
 </p>
-<table class="table table-bordered table-striped">
+<table id="tblLeaveType" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>
@@ -58,3 +58,10 @@
         }
     </tbody>
 </table>
+@section Scripts{ 
+<script>
+    $(document).ready(function () {
+        $('#tblLeaveType').DataTable();
+    });
+</script>
+}
