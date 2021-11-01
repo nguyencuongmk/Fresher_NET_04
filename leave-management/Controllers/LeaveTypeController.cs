@@ -53,7 +53,6 @@ namespace leave_management.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
         // POST: LeaveTypeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

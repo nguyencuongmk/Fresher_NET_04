@@ -38,9 +38,6 @@ namespace leave_management.Models
 
         public EmployeeVM Employee { get; set; }
 
-        public string EmployeeId { get; set; }
-
-
         [Display(Name ="Number of Days")]
         public int NumberOfDays { get; set; }
 

@@ -24,7 +24,17 @@ namespace leave_management.Repositories
 
         public bool Create(LeaveAllocation entity)
         {
-            _db.LeaveAllocations.Add(entity);
+            var lastEntity = _db.LeaveAllocations.OrderByDescending(lt => lt.Id).FirstOrDefault();
+            if (lastEntity != null)
+            {
+                _db.Database.ExecuteSqlRaw($"DBCC CHECKIDENT ('dbo.LeaveAllocations', RESEED, {lastEntity.Id})");
+                _db.LeaveAllocations.Add(entity);
+            }
+            else
+            {
+                _db.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.LeaveAllocations', RESEED, 0)");
+                _db.LeaveAllocations.Add(entity);
+            }
             return Save();
         }
 
@@ -49,6 +59,13 @@ namespace leave_management.Repositories
             var period = DateTime.Now.Year;
             var leaveAllocations = _db.LeaveAllocations.Include(la => la.LeaveType).ToList();
             return leaveAllocations.Where(la => la.EmployeeId == id && la.Period == period).ToList();
+        }
+
+        public LeaveAllocation GetLeaveAllocationByEmployeeAndLeaveType(string id, int leaveTypeId)
+        {
+            var period = DateTime.Now.Year;
+            var leaveAllocations = _db.LeaveAllocations.Include(la => la.LeaveType).ToList();
+            return leaveAllocations.FirstOrDefault(la => la.EmployeeId == id && la.Period == period && la.LeaveTypeId == leaveTypeId);
         }
 
         public bool isExists(int id)
